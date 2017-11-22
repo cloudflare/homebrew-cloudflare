@@ -2,7 +2,7 @@ class Warp < Formula
   desc 'Cloudflare Warp'
   homepage 'https://warp.cloudflare.com'
   url 'https://warp.cloudflare.com/dl/warp-2017.11.2-darwin-amd64.tgz'
-  sha256 '2dca4a2aa5732bb54f5a89f89e719075d01678ad3ca25b8ce9c0917f567453f1'
+  sha256 'b1edccf64998e63cf5670e3afa5de317aa5c5630e1c2eb2fcb7c02583a6aaa04'
   version '2017.11.2'
   def install
     bin.install 'cloudflare-warp'
