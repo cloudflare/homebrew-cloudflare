@@ -1,9 +1,9 @@
 class Warp < Formula
   desc 'Cloudflare Warp'
   homepage 'https://warp.cloudflare.com'
-  url 'https://warp.cloudflare.com/dl/warp-2018.2.0-darwin-amd64.tgz'
-  sha256 '54931dca1e2a190a70314cc7ff39365d5c0afddbfd4fb5c6b6a39af28724a719'
-  version '2018.2.0'
+  url 'https://warp.cloudflare.com/dl/warp-2018.2.1-darwin-amd64.tgz'
+  sha256 'c69cbd53b7d40daf03546c554336804488d6e4c5be4f91fe2cb9af2051925059'
+  version '2018.2.1'
   def install
     bin.install 'cloudflare-warp'
   end
