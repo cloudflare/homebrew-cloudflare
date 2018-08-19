@@ -1,31 +1,20 @@
-require 'formula'
-
-class NoOpDownloadStrategy < AbstractDownloadStrategy
-# Don't do anything.
-end
-
 class Cfssl < Formula
-  head 'https://github.com/cloudflare/cfssl', :using => NoOpDownloadStrategy
-  url 'https://github.com/cloudflare/cfssl/archive/1.2.0.zip'
-  sha256 'afe8ac0087226dfe02448c05110108b2c62eabeae5bcf9064784366b44d29b7a'
-  homepage 'https://github.com/cloudflare/cfssl'
-  version '1.2.0'
+  desc "Cloudflare's PKI and TLS toolkit"
+  homepage "https://github.com/cloudflare/cfssl"
+  url "https://github.com/cloudflare/cfssl.git",
+    :tag => "1.3.2",
+    :revision => "5d63dbd981b5c408effbb58c442d54761ff94fbd"
+  head "https://github.com/cloudflare/cfssl.git"
 
-  depends_on 'go' => :build
+  depends_on "go" => :build
 
   def install
-    if build.head?
-      ENV['GOPATH'] = buildpath
-      system 'go', 'get', 'github.com/cloudflare/cfssl'
-      bin.install 'bin/cfssl'
-    else
-      chdir '..' do
-        ENV['GOPATH'] = Dir.pwd
-        mkdir 'src/github.com/cloudflare'
-        symlink '../../../cfssl-1.2.0', 'src/github.com/cloudflare/cfssl'
-        system 'go', 'install', 'github.com/cloudflare/cfssl/cmd/cfssl'
-        bin.install 'bin/cfssl'
-      end
+    ENV["GOPATH"] = buildpath
+    bin_path = buildpath/"src/github.com/cloudflare/cfssl"
+    bin_path.install Dir["*"]
+
+    cd bin_path do
+      system "go", "build", "-o", bin/"cfssl", "cmd/cfssl/cfssl.go"
     end
   end
 
