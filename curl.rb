@@ -4,14 +4,7 @@ class Curl < Formula
   url "https://curl.haxx.se/download/curl-7.66.0.tar.bz2"
   sha256 "6618234e0235c420a21f4cb4c2dd0badde76e6139668739085a70c4e2fe7a141"
 
-  # TODO need update
-  bottle do
-    cellar :any
-    sha256 "40b832d7e108407eb3fb1b378163f08ca5b58492bde0e7c01c6c109a0f5419bd" => :mojave
-    sha256 "9b9613753b5ba8e11a1aacde92cc679f97e5b2e67c28fbb14951f29128ed0f6c" => :high_sierra
-    sha256 "a4eadb93e26d5a74b3395ca69a835df7798edadd23762822672dc8da36fb685d" => :sierra
-  end
-
+  # --HEAD might be broken
   head do
     url "https://github.com/curl/curl.git"
 
