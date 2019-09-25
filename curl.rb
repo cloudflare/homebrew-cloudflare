@@ -28,6 +28,8 @@ class Curl < Formula
   def install
     pwd = Pathname.pwd
 
+    system "./buildconf" if build.head?
+
     # build boringssl
     system "git", "clone", "--recursive", "https://github.com/cloudflare/quiche"
     mkdir_p "quiche/deps/boringssl/build" 
@@ -59,8 +61,6 @@ class Curl < Formula
                      "-e", "s@^Libs: .*@Libs: -L\\${libdir} -lquiche@",
                      "target/release/quiche.pc"
     end
-
-    system "./buildconf" if build.head?
 
     args = %W[
       --disable-debug
