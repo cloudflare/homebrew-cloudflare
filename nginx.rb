@@ -14,7 +14,7 @@ class Nginx< Formula
 
   depends_on "pcre"
 
-  depends_on "rust" => ["1.38.0", :build]
+  depends_on "rust" => ["1.39.0", :build]
   depends_on "cmake" => :build
   depends_on "go" => :build
 
