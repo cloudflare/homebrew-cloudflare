@@ -10,8 +10,8 @@
 class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server w/http3 support using quiche"
   homepage "https://curl.haxx.se/"
-  url "https://curl.haxx.se/download/curl-7.67.0.tar.bz2"
-  sha256 "dd5f6956821a548bf4b44f067a530ce9445cc8094fd3e7e3fc7854815858586c"
+  url "https://curl.haxx.se/download/curl-7.71.1.tar.bz2"
+  sha256 "9d52a4d80554f9b0d460ea2be5d7be99897a1a9f681ffafe739169afd6b4f224"
 
   head do
     url "https://github.com/curl/curl.git"
@@ -28,7 +28,6 @@ class Curl < Formula
 
   depends_on "rust" => ["1.39.0", :build]
   depends_on "cmake" => :build
-  depends_on "go" => :build
 
   # http2
   depends_on "nghttp2" => :build
@@ -40,34 +39,19 @@ class Curl < Formula
 
     # build boringssl
     system "git", "clone", "--recursive", "https://github.com/cloudflare/quiche"
-    mkdir_p "quiche/deps/boringssl/build" 
-    cd "quiche/deps/boringssl/build" do
-      system "cmake", "-DCMAKE_POSITION_INDEPENDENT_CODE=on", ".." 
-      system "make"
-    end
-    cd "quiche/deps/boringssl" do
-      mkdir_p ".openssl/lib" 
-      cp "build/crypto/libcrypto.a", ".openssl/lib"
-      cp "build/ssl/libssl.a", ".openssl/lib"
-      ln_s Pathname.pwd/"include", ".openssl"
-    end
 
     # build quiche
     cd "quiche" do
       # Build static libs only
-      system "perl", "-pi",
-                     "-e", "s@^crate-type = .*@crate-type = [\"staticlib\"]@",
-                     "Cargo.toml"
+      inreplace "Cargo.toml", /^crate-type = .*/, "crate-type = [\"staticlib\"]"
 
-      ENV["QUICHE_BSSL_PATH"] = pwd/"quiche/deps/boringssl"
       system "cargo", "build",
                       "--release",
-                      "--features", "pkg-config-meta"
+                      "--features", "pkg-config-meta,qlog"
 
-      # Update build flag for MacOS
-      system "perl", "-pi",
-                     "-e", "s@^Libs: .*@Libs: -L\\${libdir} -lquiche@",
-                     "target/release/quiche.pc"
+      mkdir_p "deps/boringssl/src/lib"
+      cp Dir.glob("target/release/build/*/out/build/libcrypto.a"), "deps/boringssl/src/lib"
+      cp Dir.glob("target/release/build/*/out/build/libssl.a"), "deps/boringssl/src/lib"
     end
 
     args = %W[
@@ -78,7 +62,7 @@ class Curl < Formula
       --with-secure-transport
       --without-ca-bundle
       --without-ca-path
-      --with-ssl=#{pwd}/quiche/deps/boringssl/.openssl
+      --with-ssl=#{pwd}/quiche/deps/boringssl/src
       --with-quiche=#{pwd}/quiche/target/release
       --enable-alt-svc
     ]
