@@ -1,9 +1,9 @@
 class Cloudflared < Formula
   desc 'Argo Tunnel'
   homepage 'https://developers.cloudflare.com/argo-tunnel/'
-  url 'https://packages.argotunnel.com/dl/cloudflared-2020.11.5-darwin-amd64.tgz'
-  sha256 'bc9b36d8eae79bf6c9916470f1002e7e7da4891d250ea3c1309f77a05855e6fc'
-  version '2020.11.5'
+  url 'https://packages.argotunnel.com/dl/cloudflared-2020.11.6-darwin-amd64.tgz'
+  sha256 '8cef07126c76282ebd034829e0952a46ed5e12759a3d315de73b010da618c666'
+  version '2020.11.6'
   def install
     bin.install 'cloudflared'
   end
