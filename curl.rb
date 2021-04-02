@@ -33,6 +33,7 @@ class Curl < Formula
   depends_on "nghttp2" => :build
 
   def install
+    # Instructions from https://github.com/curl/curl/blob/master/docs/HTTP3.md
     pwd = Pathname.pwd
 
     system "./buildconf" if build.head?
@@ -47,7 +48,7 @@ class Curl < Formula
 
       system "cargo", "build",
                       "--release",
-                      "--features", "pkg-config-meta,qlog"
+                      "--features", "ffi,pkg-config-meta,qlog"
 
       mkdir_p "deps/boringssl/src/lib"
       cp Dir.glob("target/release/build/*/out/build/libcrypto.a"), "deps/boringssl/src/lib"
