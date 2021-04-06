@@ -47,7 +47,7 @@ class Curl < Formula
 
       system "cargo", "build",
                       "--release",
-                      "--features", "pkg-config-meta,qlog"
+                      "--features", "pkg-config-meta,qlog,ffi"
 
       mkdir_p "deps/boringssl/src/lib"
       cp Dir.glob("target/release/build/*/out/build/libcrypto.a"), "deps/boringssl/src/lib"
