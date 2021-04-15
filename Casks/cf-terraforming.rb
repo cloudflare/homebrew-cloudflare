@@ -2,15 +2,15 @@ cask "cf-terraforming" do
   name "cf-terraforming"
   appcast "https://github.com/cloudflare/cf-terraforming/releases.atom"
   homepage "https://github.com/cloudflare/cf-terraforming"
-  version "0.1.0"
+  version "0.1.1"
 
   if Hardware::CPU.intel?
     url "https://github.com/cloudflare/cf-terraforming/releases/download/v#{version}/cf-terraforming_#{version}_darwin_amd64.tar.gz"
-    sha256 "ea20cc1467d257d4d97b6e6c9aab193ef6a824ef481d4dd3648fb4e842fbec9d"
-    binary "cf-terraforming"
+    sha256 "be29976d0814fe97848cf66baf35aaf84582cf714859ec427bdccc8fed384888"
   else
     url "https://github.com/cloudflare/cf-terraforming/releases/download/v#{version}/cf-terraforming_#{version}_darwin_arm64.tar.gz"
-    sha256 "5b66ddd2180f4f9f26e17a6286e4bac18bef9b97ce5e202609b582801e2cc37c"
-    binary "cf-terraforming"
+    sha256 "303c55b8140f3c876d2c0af3e1535f85ecb61fe7f3b175365b32a00c70daeea4"
   end
+
+  binary "cf-terraforming"
 end
