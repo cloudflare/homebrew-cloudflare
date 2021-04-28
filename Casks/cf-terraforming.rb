@@ -2,6 +2,7 @@ cask "cf-terraforming" do
   name "cf-terraforming"
   appcast "https://github.com/cloudflare/cf-terraforming/releases.atom"
   homepage "https://github.com/cloudflare/cf-terraforming"
+  desc "cf-terraforming is a command line utility to facilitate terraforming your existing Cloudflare resources"
   version "0.2.0"
 
   if Hardware::CPU.intel?
