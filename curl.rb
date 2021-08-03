@@ -33,6 +33,7 @@ class Curl < Formula
   depends_on "nghttp2" => :build
 
   def install
+    # Instructions from https://github.com/curl/curl/blob/master/docs/HTTP3.md
     pwd = Pathname.pwd
 
     system "autoreconf", "-fi" if build.head?
