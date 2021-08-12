@@ -3,12 +3,12 @@
 #
 # brew install -s <url of curl.rb>
 #
-# You can add --HEAD if you want to build curl from git master
+# You can add --HEAD if you want to build curl from git master (recommended)
 #
-# For more information, see https://developers.cloudflare.com/http3/intro/curl-brew/
+# For more information, see https://developers.cloudflare.com/http3/curl-brew
 #
 class Curl < Formula
-  desc "Get a file from an HTTP, HTTPS or FTP server w/http3 support using quiche"
+  desc "Get a file from an HTTP, HTTPS or FTP server with HTTP/3 using quiche"
   homepage "https://curl.haxx.se/"
   url "https://curl.haxx.se/download/curl-7.71.1.tar.bz2"
   sha256 "9d52a4d80554f9b0d460ea2be5d7be99897a1a9f681ffafe739169afd6b4f224"
@@ -26,16 +26,17 @@ class Curl < Formula
   depends_on "pkg-config" => :build
   uses_from_macos "openssl"
 
-  depends_on "rust" => ["1.39.0", :build]
+  depends_on "rust" => ["1.50.0", :build]
   depends_on "cmake" => :build
 
   # http2
   depends_on "nghttp2" => :build
 
   def install
+    # Instructions from https://github.com/curl/curl/blob/master/docs/HTTP3.md
     pwd = Pathname.pwd
 
-    system "./buildconf" if build.head?
+    system "autoreconf", "-fi" if build.head?
 
     # build boringssl
     system "git", "clone", "--recursive", "https://github.com/cloudflare/quiche"
@@ -47,7 +48,7 @@ class Curl < Formula
 
       system "cargo", "build",
                       "--release",
-                      "--features", "pkg-config-meta,qlog"
+                      "--features", "ffi,pkg-config-meta,qlog"
 
       mkdir_p "deps/boringssl/src/lib"
       cp Dir.glob("target/release/build/*/out/build/libcrypto.a"), "deps/boringssl/src/lib"
