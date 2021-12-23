@@ -1,9 +1,9 @@
 class Cloudflared < Formula
   desc 'Cloudflare Tunnel'
   homepage 'https://developers.cloudflare.com/cloudflare-one/connections/connect-apps'
-  url 'https://packages.argotunnel.com/dl/cloudflared-2021.12.2-darwin-amd64.tgz'
-  sha256 '3e3eaedef0544d9aee2c61490e93b36a982f4934d40f2e0154d189fec5fc4bce'
-  version '2021.12.2'
+  url 'https://packages.argotunnel.com/dl/cloudflared-2021.12.3-darwin-amd64.tgz'
+  sha256 '8b143927ac5c05b18b59c2e19e7b7794fe464876af3e45062579a4b2c0327b80'
+  version '2021.12.3'
   def install
     bin.install 'cloudflared'
   end
