@@ -48,10 +48,15 @@ class Curl < Formula
   uses_from_macos "krb5"
   uses_from_macos "zlib"
 
+  resource "quiche" do
+    url "https://github.com/cloudflare/quiche.git", branch: "master"
+  end
+
   def install
     # Build with quiche:
     #   https://github.com/curl/curl/blob/master/docs/HTTP3.md#quiche-version
-    system "git", "clone", "--recursive", "https://github.com/cloudflare/quiche"
+    quiche = buildpath/"quiche/quiche"
+    resource("quiche").stage quiche.parent
     cd "quiche" do
       # Build static libs only
       inreplace "quiche/Cargo.toml", /^crate-type = .*/, "crate-type = [\"staticlib\"]"
@@ -60,10 +65,7 @@ class Curl < Formula
                       "--release",
                       "--package=quiche",
                       "--features=ffi,pkg-config-meta,qlog"
-
-      mkdir_p "quiche/deps/boringssl/src/lib"
-      cp Dir.glob("target/release/build/*/out/build/libcrypto.a"), "quiche/deps/boringssl/src/lib"
-      cp Dir.glob("target/release/build/*/out/build/libssl.a"), "quiche/deps/boringssl/src/lib"
+      (quiche/"deps/boringssl/src/lib").install Pathname.glob("target/release/build/*/out/build/lib{crypto,ssl}.a")
     end
 
     system "./buildconf" if build.head?
@@ -73,7 +75,7 @@ class Curl < Formula
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
-      --with-ssl=#{Pathname.pwd}/quiche/quiche/deps/boringssl/src
+      --with-ssl=#{quiche}/deps/boringssl/src
       --with-ca-fallback
       --with-secure-transport
       --with-default-ssl-backend=openssl
@@ -81,7 +83,7 @@ class Curl < Formula
       --with-librtmp
       --with-libssh2
       --without-libpsl
-      --with-quiche=#{Pathname.pwd}/quiche/target/release
+      --with-quiche=#{quiche.parent}/target/release
       --enable-alt-svc
     ]
 
