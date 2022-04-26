@@ -96,7 +96,13 @@ class Curl < Formula
     system "./configure", *args
     system "make", "install"
     system "make", "install", "-C", "scripts"
-    libexec.install "lib/mk-ca-bundle.pl"
+    if File.exists?("lib/mk-ca-bundle.pl")
+      libexec.install "lib/mk-ca-bundle.pl"
+    elsif File.exists?("scripts/mk-ca-bundle.pl")
+      libexec.install "scripts/mk-ca-bundle.pl"
+    else
+      odie "File mk-ca-bundle.pl not found neither in lib/ nor scripts/ (check cURL source in ~/Library/Caches/Homebrew)"
+    end
   end
 
   test do
