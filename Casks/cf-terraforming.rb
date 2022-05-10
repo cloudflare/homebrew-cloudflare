@@ -3,14 +3,14 @@ cask "cf-terraforming" do
   appcast "https://github.com/cloudflare/cf-terraforming/releases.atom"
   homepage "https://github.com/cloudflare/cf-terraforming"
   desc "cf-terraforming is a command line utility to facilitate terraforming your existing Cloudflare resources"
-  version "0.7.3"
+  version "0.7.4"
 
   if Hardware::CPU.intel?
     url "https://github.com/cloudflare/cf-terraforming/releases/download/v#{version}/cf-terraforming_#{version}_darwin_amd64.tar.gz"
-    sha256 "69c96d9d54a4a5ecf7a40fe098f6f8b675da8688517b0cec7c85232e1aded42e"
+    sha256 "62c91c4befbc6927a91f5ce510f7d67fcb38990138e3a325b67e5450875f9153"
   else
     url "https://github.com/cloudflare/cf-terraforming/releases/download/v#{version}/cf-terraforming_#{version}_darwin_arm64.tar.gz"
-    sha256 "9530b3138565d3c720140c5f3847124ccd636ee959cf4058ecf846c1d91dd283"
+    sha256 "920c23a03e6474e761e9d90a639ba9f9a9a50078074d13f6aa6466538cd63660"
   end
 
   binary "cf-terraforming"
