@@ -2,9 +2,9 @@ cask "cf-terraforming" do
   arch arm:   "arm64",
        intel: "amd64"
 
-  version "0.12.0"
-  sha256 arm:   "2b94116df31f7b388a95dacbf4099099edd4817045eed570930f64bf5becd765",
-         intel: "aa60a8049a31e28738870a4f8a6f1bea6ceed44cbf564b964e95c6f765771ae1"
+  version "0.13.0"
+  sha256 arm:   "73755ab2277ab94a90dd29832af65abcc9bc22e110970c25a2ac16218f65a076",
+         intel: "910965fcf822242e96048744f128324b620518daf0aa75bfe76710e06c646ad9"
 
   url "https://github.com/cloudflare/cf-terraforming/releases/download/v#{version}/cf-terraforming_#{version}_darwin_#{arch}.tar.gz"
   appcast "https://github.com/cloudflare/cf-terraforming/releases.atom"
