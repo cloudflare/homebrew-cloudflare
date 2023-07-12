@@ -7,7 +7,9 @@ cask "cf-terraforming" do
          intel: "910965fcf822242e96048744f128324b620518daf0aa75bfe76710e06c646ad9"
 
   url "https://github.com/cloudflare/cf-terraforming/releases/download/v#{version}/cf-terraforming_#{version}_darwin_#{arch}.tar.gz"
-  appcast "https://github.com/cloudflare/cf-terraforming/releases.atom"
+  livecheck do
+    url "https://github.com/cloudflare/cf-terraforming/releases.atom"
+  end
   name "cf-terraforming"
   desc "Utility to export your existing Cloudflare resources as Terraform resources"
   homepage "https://github.com/cloudflare/cf-terraforming"
