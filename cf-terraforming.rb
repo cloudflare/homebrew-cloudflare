@@ -3,7 +3,7 @@ class CfTerraforming < Formula
   homepage "https://github.com/cloudflare/cf-terraforming"
   url "https://github.com/cloudflare/cf-terraforming/archive/refs/tags/v0.16.1.tar.gz"
   sha256 "f7b9de62c5ab769a032a836169bdfdbb980b90410643f9442dfa7cadbbbeb798"
-  license "MIT"
+  license "Mozilla Public License 2.0"
   head "https://github.com/cloudflare/cf-terraforming.git", branch: "master"
 
   depends_on "go" => :build
