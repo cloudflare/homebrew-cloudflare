@@ -1,4 +1,5 @@
 class Warp < Formula
+  disable! date: "2024-01-10", because: :unmaintained
   desc 'Cloudflare Warp'
   homepage 'https://warp.cloudflare.com'
   url 'https://warp.cloudflare.com/dl/warp-2018.3.0-darwin-amd64.tgz'
