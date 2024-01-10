@@ -1,4 +1,5 @@
 class Cloudflared < Formula
+  deprecate! date: "2024-01-10", because: "moved to homebrew-core repository"
   desc 'Cloudflare Tunnel'
   homepage 'https://developers.cloudflare.com/cloudflare-one/connections/connect-apps'
   url 'https://packages.argotunnel.com/dl/cloudflared-2024.1.1-darwin-amd64.tgz'
