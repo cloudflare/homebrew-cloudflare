@@ -1,8 +1,8 @@
 class CfTerraforming < Formula
   desc "Utility to export your existing Cloudflare resources as Terraform resources"
   homepage "https://github.com/cloudflare/cf-terraforming"
-  url "https://github.com/cloudflare/cf-terraforming/archive/refs/tags/v0.23.2.tar.gz"
-  sha256 "94361d74241fe79803d7981b51294fd252a5d337359ca3147d68061a1d144b46"
+  url "https://github.com/cloudflare/cf-terraforming/archive/refs/tags/v0.23.3.tar.gz"
+  sha256 "a60037470a637b7bb81e5b345a182d8907aafdbf8ab7836d8817b5e2e6496228"
   license "Mozilla Public License 2.0"
   head "https://github.com/cloudflare/cf-terraforming.git", branch: "master"
 
