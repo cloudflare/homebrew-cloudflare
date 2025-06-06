@@ -13,24 +13,12 @@ class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server with HTTP/3 support using quiche"
   homepage "https://curl.se"
   # Don't forget to update both instances of the version in the GitHub mirror URL.
-  # `url` goes below this comment when the `stable` block is removed.
-
+  url "https://curl.se/download/curl-8.14.1.tar.bz2"
+  mirror "https://github.com/curl/curl/releases/download/curl-8_14_1/curl-8.14.1.tar.bz2"
+  mirror "http://fresh-center.net/linux/www/curl-8.14.1.tar.bz2"
+  mirror "http://fresh-center.net/linux/www/legacy/curl-8.14.1.tar.bz2"
+  sha256 "5760ed3c1a6aac68793fc502114f35c3e088e8cd5c084c2d044abdf646ee48fb"
   license "curl"
-
-  stable do
-    url "https://curl.se/download/curl-8.14.0.tar.bz2"
-    mirror "https://github.com/curl/curl/releases/download/curl-8_14_0/curl-8.14.0.tar.bz2"
-    mirror "http://fresh-center.net/linux/www/curl-8.14.0.tar.bz2"
-    mirror "http://fresh-center.net/linux/www/legacy/curl-8.14.0.tar.bz2"
-    sha256 "efa1403c5ac4490c8d50fc0cabe97710abb1bf2a456e375a56d960b20a1cba80"
-
-    # fix https://github.com/curl/curl/issues/17473
-    # curl_multi_add_handle() returning OOM when using more than 400 handles
-    patch do
-      url "https://github.com/curl/curl/commit/d16ccbd55de80c271fe822f4ba8b6271fd9166ff.patch?full_index=1"
-      sha256 "d30d4336e2422bedba66600b4c05a3bed7f9c51c1163b75d9ee8a27424104745"
-    end
-  end
 
   livecheck do
     url "https://curl.se/download/"
