@@ -98,6 +98,7 @@ class Curl < Formula
       --with-fish-functions-dir=#{fish_completion}
       --with-quiche=#{quiche.parent}/target/release
       --enable-alt-svc
+      --enable-ech
     ]
 
     args << if OS.mac?
