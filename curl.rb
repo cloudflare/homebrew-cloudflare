@@ -13,11 +13,11 @@ class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server with HTTP/3 support using quiche"
   homepage "https://curl.se"
   # Don't forget to update both instances of the version in the GitHub mirror URL.
-  url "https://curl.se/download/curl-8.14.1.tar.bz2"
-  mirror "https://github.com/curl/curl/releases/download/curl-8_14_1/curl-8.14.1.tar.bz2"
-  mirror "http://fresh-center.net/linux/www/curl-8.14.1.tar.bz2"
-  mirror "http://fresh-center.net/linux/www/legacy/curl-8.14.1.tar.bz2"
-  sha256 "5760ed3c1a6aac68793fc502114f35c3e088e8cd5c084c2d044abdf646ee48fb"
+  url "https://curl.se/download/curl-8.15.0.tar.bz2"
+  mirror "https://github.com/curl/curl/releases/download/curl-8_15_0/curl-8.15.0.tar.bz2"
+  mirror "http://fresh-center.net/linux/www/curl-8.15.0.tar.bz2"
+  mirror "http://fresh-center.net/linux/www/legacy/curl-8.15.0.tar.bz2"
+  sha256 "699a6d2192322792c88088576cff5fe188452e6ea71e82ca74409f07ecc62563"
   license "curl"
 
   livecheck do
