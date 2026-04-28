@@ -1,5 +1,5 @@
 class TfMigrate < Formula
-  desc "CLI tool for migrating Cloudflare Terraform provider configurations and state"
+  desc "CLI tool for migrating Cloudflare Terraform provider configurations"
   homepage "https://github.com/cloudflare/tf-migrate"
   url "https://github.com/cloudflare/tf-migrate/archive/refs/tags/v1.0.0.tar.gz"
   sha256 "814a497d74765a1932c98378835c9017f4302b61d01064e085c7dc83a767cd9f"
