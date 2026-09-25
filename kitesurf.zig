@@ -33,6 +33,9 @@ const help =
     \\Without -m, Kitty is used when supported; otherwise ANSI is used.
     \\URL is optional. Example: kitesurf -m ansi https://celso.io/
     \\
+    \\This client uses the open Kitesurf playground at https://kitesurf.dev/.
+    \\The playground is rate-limited; please do not abuse it.
+    \\
 ;
 
 var interrupted: c.sig_atomic_t = 0;
