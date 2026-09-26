@@ -2,6 +2,8 @@ const std = @import("std");
 const builtin = @import("builtin");
 const c = @cImport({
     @cDefine("_DEFAULT_SOURCE", "1");
+    // Zig cannot translate glibc's fortified poll() wrapper in optimized builds.
+    @cUndef("_FORTIFY_SOURCE");
     @cInclude("curl/curl.h");
     @cInclude("errno.h");
     @cInclude("poll.h");
@@ -10,6 +12,11 @@ const c = @cImport({
     @cInclude("termios.h");
     @cInclude("unistd.h");
 });
+
+// On macOS stderr is a macro (translated to a function); on glibc and musl it is a variable.
+fn stderrFile() *c.FILE {
+    return if (builtin.os.tag == .macos) c.stderr() else c.stderr.?;
+}
 
 const buffer_size = 16384;
 const reset = "\x1b[?1016l\x1b[?1006l\x1b[?1003l\x1b[?1002l\x1b[?1000l" ++
@@ -89,7 +96,7 @@ fn runSession(curl: *c.CURL) u8 {
     if (c.curl_easy_getinfo(curl, c.CURLINFO_ACTIVESOCKET, &socket) != c.CURLE_OK or
         socket == c.CURL_SOCKET_BAD)
     {
-        _ = c.fprintf(c.stderr(), "could not obtain WebSocket connection\n");
+        _ = c.fprintf(stderrFile(), "could not obtain WebSocket connection\n");
         return 1;
     }
 
@@ -108,7 +115,7 @@ fn runSession(curl: *c.CURL) u8 {
             if (result == c.CURLE_AGAIN or (result == c.CURLE_OK and sent == 0)) {
                 send_ready = false;
             } else if (result != c.CURLE_OK) {
-                _ = c.fprintf(c.stderr(), "send WebSocket data: %s\n", c.curl_easy_strerror(result));
+                _ = c.fprintf(stderrFile(), "send WebSocket data: %s\n", c.curl_easy_strerror(result));
                 return 1;
             }
             if (outgoing_offset == outgoing_length) {
@@ -127,7 +134,7 @@ fn runSession(curl: *c.CURL) u8 {
             } else if (result == c.CURLE_GOT_NOTHING) {
                 return 0;
             } else if (result != c.CURLE_OK) {
-                _ = c.fprintf(c.stderr(), "receive WebSocket data: %s\n", c.curl_easy_strerror(result));
+                _ = c.fprintf(stderrFile(), "receive WebSocket data: %s\n", c.curl_easy_strerror(result));
                 return 1;
             } else {
                 if (frame != null and (frame.*.flags & c.CURLWS_CLOSE) != 0) return 0;
@@ -184,14 +191,14 @@ pub fn main(init: std.process.Init.Minimal) u8 {
     var arg: usize = 1;
     if (args.len > 1 and std.mem.eql(u8, std.mem.span(args[1]), "-m")) {
         if (args.len < 3) {
-            _ = c.fprintf(c.stderr(), "Usage: kitesurf [-m MODE] [URL]\nTry 'kitesurf --help' for more information.\n");
+            _ = c.fprintf(stderrFile(), "Usage: kitesurf [-m MODE] [URL]\nTry 'kitesurf --help' for more information.\n");
             return 2;
         }
         mode = std.mem.span(args[2]);
         arg = 3;
     }
     if (args.len > arg + 1 or (args.len > arg and std.mem.startsWith(u8, std.mem.span(args[arg]), "-"))) {
-        _ = c.fprintf(c.stderr(), "Usage: kitesurf [-m MODE] [URL]\nTry 'kitesurf --help' for more information.\n");
+        _ = c.fprintf(stderrFile(), "Usage: kitesurf [-m MODE] [URL]\nTry 'kitesurf --help' for more information.\n");
         return 2;
     }
     if (args.len > arg) url = std.mem.span(args[arg]);
@@ -202,16 +209,16 @@ pub fn main(init: std.process.Init.Minimal) u8 {
     _ = c.signal(c.SIGHUP, onSignal);
 
     if (c.curl_global_init(c.CURL_GLOBAL_DEFAULT) != c.CURLE_OK) {
-        _ = c.fprintf(c.stderr(), "could not initialize libcurl\n");
+        _ = c.fprintf(stderrFile(), "could not initialize libcurl\n");
         return 1;
     }
     defer c.curl_global_cleanup();
     if (!websocketAvailable()) {
-        _ = c.fprintf(c.stderr(), "libcurl was built without WSS support; use Homebrew curl\n");
+        _ = c.fprintf(stderrFile(), "libcurl was built without WSS support; use Homebrew curl\n");
         return 1;
     }
     const curl = c.curl_easy_init() orelse {
-        _ = c.fprintf(c.stderr(), "could not create libcurl handle\n");
+        _ = c.fprintf(stderrFile(), "could not create libcurl handle\n");
         return 1;
     };
     defer c.curl_easy_cleanup(curl);
@@ -221,13 +228,13 @@ pub fn main(init: std.process.Init.Minimal) u8 {
     defer c.curl_free(escaped_mode);
     defer c.curl_free(escaped_url);
     if (escaped_mode == null or escaped_url == null) {
-        _ = c.fprintf(c.stderr(), "could not encode URL\n");
+        _ = c.fprintf(stderrFile(), "could not encode URL\n");
         return 1;
     }
     const endpoint = std.fmt.allocPrintSentinel(std.heap.page_allocator,
         "wss://kitesurf.dev/tui?mode={s}&url={s}",
         .{ std.mem.span(escaped_mode), std.mem.span(escaped_url) }, 0) catch {
-        _ = c.fprintf(c.stderr(), "could not allocate URL\n");
+        _ = c.fprintf(stderrFile(), "could not allocate URL\n");
         return 1;
     };
     defer std.heap.page_allocator.free(endpoint);
@@ -238,7 +245,7 @@ pub fn main(init: std.process.Init.Minimal) u8 {
     _ = c.curl_easy_setopt(curl, c.CURLOPT_NOSIGNAL, @as(c_long, 1));
     const result = c.curl_easy_perform(curl);
     if (result != c.CURLE_OK) {
-        _ = c.fprintf(c.stderr(), "connect to kitesurf.dev: %s\n", c.curl_easy_strerror(result));
+        _ = c.fprintf(stderrFile(), "connect to kitesurf.dev: %s\n", c.curl_easy_strerror(result));
         return 1;
     }
     return runSession(curl);
