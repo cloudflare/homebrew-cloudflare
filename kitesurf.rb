@@ -2,7 +2,7 @@ class Kitesurf < Formula
   desc "Interactive terminal browser for the web"
   homepage "https://kitesurf.dev"
   url "file://#{__dir__}/kitesurf.zig"
-  version "0.1.0"
+  version "0.1.1"
   sha256 "8dc4621088df5fb4e9fef04a1b458caa4682ccbc22a580334c9c3623cbc53eb5"
 
   depends_on "zig" => :build
