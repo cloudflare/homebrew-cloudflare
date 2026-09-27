@@ -2,8 +2,8 @@ class Kitesurf < Formula
   desc "Interactive terminal browser for the web"
   homepage "https://kitesurf.dev"
   url "file://#{__dir__}/kitesurf.zig"
-  version "0.1.0"
-  sha256 "cca90ed30d70eb3f1b4179b69487889691e906fca5e633427cce4f6a9187b4db"
+  version "0.1.1"
+  sha256 "8dc4621088df5fb4e9fef04a1b458caa4682ccbc22a580334c9c3623cbc53eb5"
 
   depends_on "zig" => :build
   depends_on "homebrew/core/curl"
