@@ -1,21 +1,20 @@
 class Kitesurf < Formula
   desc "Interactive terminal browser for the web"
   homepage "https://kitesurf.dev"
-  url "file://#{__dir__}/kitesurf.zig"
-  version "0.1.1"
-  sha256 "8dc4621088df5fb4e9fef04a1b458caa4682ccbc22a580334c9c3623cbc53eb5"
+  url "file://#{__dir__}/src/kitesurf-cli.tar.gz"
+  version "0.2.0"
+  sha256 "c244819892922efb9ab9b7a51daa7e877f59a93ff9387d901810c3e769996726"
+  license "Apache-2.0"
 
-  depends_on "zig" => :build
-  depends_on "homebrew/core/curl"
+  depends_on "pkgconf" => :build
+  depends_on "rust" => :build
+
+  on_linux do
+    depends_on "openssl@3"
+  end
 
   def install
-    curl = Formula["homebrew/core/curl"]
-    system "zig", "build-exe", "kitesurf.zig",
-           "-O", "ReleaseSafe",
-           "-lc", "-lcurl",
-           "-I#{curl.opt_include}", "-L#{curl.opt_lib}",
-           "-femit-bin=kitesurf"
-    bin.install "kitesurf"
+    system "cargo", "install", *std_cargo_args
   end
 
   def caveats
@@ -26,9 +25,9 @@ class Kitesurf < Formula
   end
 
   test do
-    assert_match "kitty        Default when supported", shell_output("#{bin}/kitesurf --help")
-    assert_match "ansi         Selectable terminal text", shell_output("#{bin}/kitesurf -h")
-    assert_match "The playground is rate-limited; please do not abuse it.", shell_output("#{bin}/kitesurf --help")
-    assert_match "Try 'kitesurf --help'", shell_output("#{bin}/kitesurf -m 2>&1", 2)
+    assert_match "kitty (default) or ansi (for any terminal)", shell_output("#{bin}/kitesurf --help")
+    assert_match "Maximum scene frames per second", shell_output("#{bin}/kitesurf -h")
+    assert_match "--mode requires a value", shell_output("#{bin}/kitesurf --mode 2>&1", 2)
+    assert_match "invalid fps (expected 1-60)", shell_output("#{bin}/kitesurf --fps 0 2>&1", 2)
   end
 end
