@@ -5,6 +5,7 @@ class Kitesurf < Formula
   version "0.0.5"
   sha256 "e747a8b897b4d676ab378bbf01046eef21992d46d7fa73032aba82e31e9f3d73"
   license "Apache-2.0"
+  version_scheme 1
 
   depends_on "pkgconf" => :build
   depends_on "rust" => :build
@@ -19,14 +20,18 @@ class Kitesurf < Formula
 
   def caveats
     <<~EOS
-      Use --playground to connect to the open playground at https://kitesurf.dev/.
-      The playground is rate-limited; please do not abuse it.
+      Kitesurf connects through Cloudflare Browser Run by default.
+      Run `kitesurf login` to sign in, or open a URL to start login automatically.
+      Use `kitesurf --playground URL` for the rate-limited public playground.
+      API tokens use KITESURF_API_TOKEN together with CLOUDFLARE_ACCOUNT_ID.
     EOS
   end
 
   test do
+    assert_match "kitesurf #{version}", shell_output("#{bin}/kitesurf --version")
     assert_match "kitty (default) or ansi (for any terminal)", shell_output("#{bin}/kitesurf --help")
     assert_match "Maximum scene frames per second", shell_output("#{bin}/kitesurf -h")
+    assert_match "KITESURF_API_TOKEN", shell_output("#{bin}/kitesurf login --help")
     assert_match "--mode requires a value", shell_output("#{bin}/kitesurf --mode 2>&1", 2)
     assert_match "invalid fps (expected 1-60)", shell_output("#{bin}/kitesurf --fps 0 2>&1", 2)
   end
