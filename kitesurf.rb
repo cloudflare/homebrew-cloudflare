@@ -2,8 +2,8 @@ class Kitesurf < Formula
   desc "Interactive terminal browser for the web"
   homepage "https://kitesurf.dev"
   url "file://#{__dir__}/src/kitesurf-cli.tar.gz"
-  version "0.0.4"
-  sha256 "922c6f47f4dce5d6902ac506d788550c7814125287edf5f992733db124e57348"
+  version "0.0.5"
+  sha256 "e747a8b897b4d676ab378bbf01046eef21992d46d7fa73032aba82e31e9f3d73"
   license "Apache-2.0"
   version_scheme 1
 
