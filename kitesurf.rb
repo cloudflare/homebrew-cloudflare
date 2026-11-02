@@ -2,8 +2,8 @@ class Kitesurf < Formula
   desc "Interactive terminal browser for the web"
   homepage "https://kitesurf.dev"
   url "file://#{__dir__}/src/kitesurf-cli.tar.gz"
-  version "0.2.0"
-  sha256 "c244819892922efb9ab9b7a51daa7e877f59a93ff9387d901810c3e769996726"
+  version "0.0.5"
+  sha256 "e747a8b897b4d676ab378bbf01046eef21992d46d7fa73032aba82e31e9f3d73"
   license "Apache-2.0"
 
   depends_on "pkgconf" => :build
@@ -19,7 +19,7 @@ class Kitesurf < Formula
 
   def caveats
     <<~EOS
-      Kitesurf uses the open playground at https://kitesurf.dev/.
+      Use --playground to connect to the open playground at https://kitesurf.dev/.
       The playground is rate-limited; please do not abuse it.
     EOS
   end
